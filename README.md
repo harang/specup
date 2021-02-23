@@ -1,0 +1,2 @@
+# specup
+aws project
