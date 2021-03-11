@@ -64,7 +64,7 @@
                 <div class="navbar-collapse collapse ">
                     <ul class="nav navbar-nav">
                         
-						<li><a href="./contest/list.php">참여현황</a></li>
+						<li><a href="./contest/list_all.php">참여현황</a></li>
 						<li><a href="./greet/list.php">커뮤니티</a></li>
                         <li><a href="./company/welcome.php">콘텐츠</a></li>
                         <li><a href="./dynamoDBtest/scan.php">공모전</a></li>                 

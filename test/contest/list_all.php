@@ -31,7 +31,7 @@ $marshaler = new Marshaler();
 $tableName = 'Entryform';
 $num = $_POST['idx'];
 
-
+/*
 $eav = $marshaler->marshalJson('
     {
         ":titnum": 7
@@ -40,7 +40,23 @@ $eav = $marshaler->marshalJson('
 
 $params = [
     'TableName' => $tableName,
-    'KeyConditionExpression' => '#num = :titnum',
+    //'KeyConditionExpression' => '#num = :titnum',
+    //'ExpressionAttributeNames'=> [ '#num' => 'number' ],
+    'ExpressionAttributeValues'=> $eav
+];
+ */
+
+$eav = $marshaler->marshalJson('
+    {
+        ":start_num": 1,
+        ":end_num": 100
+    }
+');
+
+$params = [
+    'TableName' => $tableName,
+    'ProjectionExpression' => '#num, title, info',
+    'FilterExpression' => '#num between :start_num and :end_num',
     'ExpressionAttributeNames'=> [ '#num' => 'number' ],
     'ExpressionAttributeValues'=> $eav
 ];
@@ -65,8 +81,10 @@ $params = [
 
 <?
 try {
-	$result = $dynamodb->query($params);
-		
+	//
+	//$result = $dynamodb->query($params);
+	$result = $dynamodb->scan($params);
+
         foreach ($result['Items'] as $i) {
 	// echo $marshaler->unmarshalValue($entry['number']) . ': ' .
  	  //    $marshaler->unmarshalValue($entry['title']) . "\n";
