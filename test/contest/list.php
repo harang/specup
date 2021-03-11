@@ -27,12 +27,22 @@ $sdk = new Aws\Sdk([
 ]);
 
 $dynamodb = $sdk->createDynamoDb();
-
 $marshaler = new Marshaler();
 
+$number = $_GET['idx'];
+$tableName = 'Entryform'
+
+$eav = $marshaler->marshalJson('
+    {
+        ":num": 7
+    }
+');
+
 $params = [
-    'TableName' => 'contest',
-    'ProjectionExpression' => 'userid, title, content'
+    'TableName' => $tableName,
+    'KeyConditionExpression' => '#num = :num',
+    'ExpressionAttributeNames'=> [ '#num' => 'number' ],
+    'ExpressionAttributeValues'=> $eav
 ];
 
 $date = date("Y-m-d");
@@ -58,12 +68,17 @@ try {
         foreach ($result['Items'] as $i) {
             $contest = $marshaler->unmarshalItem($i);
 ?> 
+
+
     <tr>	   
 	<td><input type='checkbox' name='select' value='<?$contest['userid'] ?>'/></td>   
 	<td><?= $contest['userid'] ?></td>	
 	<td><a href='view.php?idx=<?echo $contest['userid'];?>&title=<?= $contest['title'];?>'><?= $contest['title'] ?></a> </td>
 	<td><?= $contest['content'] ?></td>
 	<td><?= $date ?></td>
+
+
+
 <?
         }
 
