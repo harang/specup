@@ -1,8 +1,5 @@
-
-
-<?php
-
-
+<?
+include "../header.php";
 /**
  * Copyright 2010-2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
@@ -15,7 +12,7 @@
  * This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
  * CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
- */
+*/
 
 require '/var/www/html/vendor/autoload.php';
 
@@ -30,56 +27,60 @@ $sdk = new Aws\Sdk([
 ]);
 
 $dynamodb = $sdk->createDynamoDb();
-
 $marshaler = new Marshaler();
 
-//Expression attribute values
+$number = $_GET['idx'];
+$tableName = 'Entryform'
+
 $eav = $marshaler->marshalJson('
     {
-        ":start_num": 1,
-        ":end_num": 100
+        ":nnn": 7
     }
 ');
 
 $params = [
-    'TableName' => 'Board',
-    'ProjectionExpression' => '#num, title',
-    'FilterExpression' => '#num between :start_num and :end_num',
-    'ExpressionAttributeNames'=> [ '#num' => 'number' ],
+    'TableName' => $tableName,
+    'KeyConditionExpression' => '#nm = :nnn',
+    'ExpressionAttributeNames'=> [ '#nm' => 'number' ],
     'ExpressionAttributeValues'=> $eav
 ];
 
+$date = date("Y-m-d");
 ?>
 
 <article>
 <div class="container">
+  <center>
+  <h1> 공모전 참여현황 </h1>
+  </center><hr>
   <table>
   <tr>
     <th></th>
-    <th>제목</th>
+    <th>소속</th>
+    <th>이름</th>
+    <th>신청상태</th>
+  </tr>
 
-<?php
+<?
 try {
     while (true) {
-        $result = $dynamodb->scan($params);
+        $result = $dynamodb->query($params);
 
         foreach ($result['Items'] as $i) {
-            $Board = $marshaler->unmarshalItem($i);
-        
-?>
-  <tr>
-    <td><input type='checkbox' name='select' value='<?$Board['number'] ?>'/></td>
-    <td><?= $Board['number'] ?></td>
-    <td><a href='content.php?idx=<?echo $Board['number'];?>&title=<?echo $Board['title'];?>'><?= $Board['title'] ?></a> </td>
-
-<?php
-	}
-?>
+            $contest = $marshaler->unmarshalItem($i);
+?> 
 
 
-<?php
+    <tr>	   
+	<td><input type='checkbox' name='select' value='<?$contest['userid'] ?>'/></td>   
+	<td><? $contest['info']['소속'] ?></td>	
+	<td><? $contest['info']['이름']?></td>
+	<td><? $contest['info']['신청상태']?></td>
+    </tr>
 
 
+<?
+        }
 
         if (isset($result['LastEvaluatedKey'])) {
             $params['ExclusiveStartKey'] = $result['LastEvaluatedKey'];
@@ -92,11 +93,11 @@ try {
     echo "Unable to scan:\n";
     echo $e->getMessage() . "\n";
 }
-
-
 ?>
 </table>
-  <a href='upload_form.php' class="btn btn-theme" >글쓰기</a>
 </div>
 </article>
+<?
+include "../footer.php";
+?>
 
