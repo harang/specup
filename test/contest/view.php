@@ -25,6 +25,8 @@ $sdk = new Aws\Sdk([
     'version'  => 'latest'
 ]);
 
+$myfile_save_dir = '/var/www/html/test/contest/upload/';
+
 $dynamodb = $sdk->createDynamoDb();
 $marshaler = new Marshaler();
 
@@ -47,7 +49,14 @@ $params = [
 
 try {
     $result = $dynamodb->getItem($params);
-    print_r($result["Item"]);
+     //print_r($result["Item"]);
+     $id = $result["Item"]["userid"]["S"];
+     $tit = $result["Item"]["title"]["S"];
+     $con = $result["Item"]["content"]["S"];
+     $file =  $result["Item"]["filename"]["S"];
+    
+     echo $result["Item"]["filename"]["S"];
+
 
 ?>
 <html>
@@ -60,24 +69,24 @@ try {
 <table>
 <tr>
         <td>아이디: </td>
-        <td><?=$userid;?></td>
+        <td><?=$id;?></td>
 </tr>
 <tr>
         <td>제목: </td>
-        <td><?=$title;?></td>
+        <td><?=$tit;?></td>
 </tr>
 <tr>
         <td>내용: </td>
-        <td><?=$content;?></td>
+        <td><?=$con;?></td>
 </tr>
 <tr>
-        <td>파일다운받기: </td>
-        <td><?=$fileename;?></td>
+        <td>업로드파일: </td>
+        <td><?=$file;?></td>
         </td>
 </tr>
 </table>
 <p><a href='list.php'>목록가기</a></p>
-<p><a href="http://52.79.240.252/contest/fileDownload.php?filepath=<?= $myfile_save_dir . $name ?>">업로드
+<p><a href="http://52.79.240.252/contest/fileDownload.php?filepath=<?= $myfile_save_dir . $file ?>">업로드
 한 파일 다운로드 하기</a></p>
 
 </body>

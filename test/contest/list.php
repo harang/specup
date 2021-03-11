@@ -27,12 +27,22 @@ $sdk = new Aws\Sdk([
 ]);
 
 $dynamodb = $sdk->createDynamoDb();
-
 $marshaler = new Marshaler();
 
+$number = $_GET['idx'];
+$tableName = 'Entryform'
+
+$eav = $marshaler->marshalJson('
+    {
+        ":nnn": 7
+    }
+');
+
 $params = [
-    'TableName' => 'contest',
-    'ProjectionExpression' => 'userid, title, content, filename'
+    'TableName' => $tableName,
+    'KeyConditionExpression' => '#nm = :nnn',
+    'ExpressionAttributeNames'=> [ '#nm' => 'number' ],
+    'ExpressionAttributeValues'=> $eav
 ];
 
 $date = date("Y-m-d");
@@ -41,29 +51,34 @@ $date = date("Y-m-d");
 <article>
 <div class="container">
   <center>
-  <h1> 공모전 참가현황 </h1>
+  <h1> 공모전 참여현황 </h1>
   </center><hr>
   <table>
   <tr>
     <th></th>
-    <th>ID</th>
-    <th>제목</th>
-    <th>내용</th>
-    <th>작성일</th>
+    <th>소속</th>
+    <th>이름</th>
+    <th>신청상태</th>
+  </tr>
+
 <?
 try {
     while (true) {
-        $result = $dynamodb->scan($params);
+        $result = $dynamodb->query($params);
 
         foreach ($result['Items'] as $i) {
             $contest = $marshaler->unmarshalItem($i);
 ?> 
+
+
     <tr>	   
 	<td><input type='checkbox' name='select' value='<?$contest['userid'] ?>'/></td>   
-	<td><?= $contest['userid'] ?></td>	
-	<td><a href='view.php?idx=<?echo $contest['userid'];?>&title=<?= $contest['title'];?>&filename=<?= $contest['filename'];?>'><?= $contest['title'] ?></a> </td>
-	<td><?= $contest['content'] ?></td>
-	<td><?= $date ?></td>
+	<td><? $contest['info']['소속'] ?></td>	
+	<td><? $contest['info']['이름']?></td>
+	<td><? $contest['info']['신청상태']?></td>
+    </tr>
+
+
 <?
         }
 
@@ -85,3 +100,4 @@ try {
 <?
 include "../footer.php";
 ?>
+

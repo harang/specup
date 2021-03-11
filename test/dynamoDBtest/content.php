@@ -71,8 +71,8 @@ try {
     <td><?= $term ?></td>
     <td><?= $state ?></td>
   </tr>
-  </table>
-    <textarea name="content" rows="10" style="width:100%; border: 0;"></textarea>
+    </table>
+    <img src="https://itbankbucket.s3.ap-northeast-2.amazonaws.com/testcat.jpg">
     <hr>
     <input type='button' value='공모전 신청' onClick='location.href="../contest/upload_contest.php"' />
     <input type='button' value='참가현황' onClick='location.href="../contest/list.php?idx=<?echo $num;?> "' />
