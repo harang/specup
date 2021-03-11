@@ -15,12 +15,12 @@
 	<link href="css/flexslider.css" rel="stylesheet" />
 	<link href="js/owl-carousel/owl.carousel.css" rel="stylesheet">
 	<link href="css/style.css" rel="stylesheet" />   
-	</head> 
 </head>
 
 
-	<div id="wrapper">
-		<header>
+<!--	<div id="wrapper">-->
+	
+	<header>
 		
 		<div class="navbar navbar-default navbar-static-top">
         	<div class="container">
@@ -30,7 +30,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="../index.php"><img src="img/specUp.png" alt="logo" height="100"/></a>					
+                    <a class="navbar-brand" href="../index.php"><img src="specUp.png" alt="logo" height="100"/></a>					
         		</div>
                 <div class="navbar-collapse collapse ">
                     <ul class="nav navbar-nav">                        
@@ -59,5 +59,5 @@
 		</div>
 		</header>
 
-<div class="clear"></div>
+	<div class="clear"></div>
 	

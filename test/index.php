@@ -94,26 +94,16 @@
 
 	<section id="banner">	
 
-		<div id="main-slider">
-			<ul class="slides">
-            	<li>
-					<img src="img/slides/1.png" height="650" alt="" />
-					<div class="flex-caption">
-						<h3>공모전 리스트</h3> 
-						<p>공모전 리스트를 보고싶다면 하단의 보러가기 버튼을 클릭해보세요!</p> 
-						<a href="./dynamoDBtest/scan.php" class="btn btn-theme">보러가기</a>
-					</div>
-				</li>
-				<!--<li>
-					<img src="img/slides/1.png" height="600" alt="" />
-					<div class="flex-caption">
-						<h3>공모전 참여현황</h3> 
-						<p>공모전 참여현황이 보고싶다면 하단의 보러가기 버튼을 클릭해보세요!</p> 
-						<a href="./dynamoDBtest/scan.php" class="btn btn-theme">보러가기</a>
-					</div>
-				</li>-->
-			</ul>		
-    	</div>
+		<div id="main-slider" class="flexslider">
+			
+			<img src="img/slides/1.png" height="600" alt="" />
+			<div class="flex-caption">
+				<h3>공모전 리스트</h3> 
+				<p>공모전 리스트를 보고싶다면 하단의 보러가기 버튼을 클릭해보세요!</p> 
+				<a href="portfolio.html" class="btn btn-theme">보러가기</a>
+			</div>
+		
+		</div>
 	</section>							
 		
 	<section id="content">	
@@ -138,7 +128,6 @@
 			</div>
 							
     </section>
-	
 
 		<footer>
 			<hr>
