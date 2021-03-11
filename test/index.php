@@ -6,6 +6,13 @@
 ?>
 <html>
 	<head>
+
+	<meta charset="utf-8">
+	<title>당신의 스펙을 Up! Spec Up</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="description" content="" />
+	<meta name="author" content="신하랑" />
+
 	<link href="/basic/css/main.css" rel="stylesheet" type="text/css">
 	<link href="css/bootstrap.min.css" rel="stylesheet" />
 	<link href="css/fancybox/jquery.fancybox.css" rel="stylesheet">
@@ -14,15 +21,26 @@
 	<link href="js/owl-carousel/owl.carousel.css" rel="stylesheet">
 	<link href="css/style.css" rel="stylesheet" />   
 	</head>
+
+
 	<body>
 	
-	<div id="wrap">
+	<div id="wrapper" class="home-page">
 		<header>
 		<div class="navbar navbar-default navbar-static-top">
             <div class="container">
+				<div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" >
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="index.php"><img src="img/specUp.png" alt="logo" height="100"/></a>					
+                </div>
 			
 		<!--	
 		<?php 
+		//commented out
 			if(! $_SESSION['userid'])
 			{
 				?>
@@ -38,30 +56,18 @@
 		<?php } ?>
 		-->
 		
-			<div id="logo">
-			<h1>	 </h1>
-			</div>
 		
 		<!--from html-->
 			
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" >
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="index.php"><img src="img/specUp.png" alt="logo" height="100"/></a>
-					
-                </div>
+                
+
                 <div class="navbar-collapse collapse ">
                     <ul class="nav navbar-nav">
                         
 						<li><a href="./contest/list.php">참여현황</a></li>
 						<li><a href="./greet/list.php">커뮤니티</a></li>
                         <li><a href="./company/welcome.php">콘텐츠</a></li>
-                        <li><a href="./dynamoDBtest/scan.php">공모전 등록</a></li>
-                        
-                       
+                        <li><a href="./dynamoDBtest/scan.php">공모전</a></li>                 
 
 						<?php 
 							if(! $_SESSION['userid'])
@@ -83,38 +89,48 @@
             </div>
         </div>
 		</header>
+	<!-- end header -->
 
-		<div class="clear"></div>
 
-		
+	<section id="banner">	
 
-		<div id="main-slider" class="flexslider">
-		
-            <img src="img/slides/1.png" height="600" alt="" />
-            <div class="flex-caption">
-                <h3>공모전 리스트</h3> 
-                <p>공모전 리스트를 보고싶다면 하단의 보러가기 버튼을 클릭해보세요!</p> 
-                <a href="portfolio.html" class="btn btn-theme">보러가기</a>
-            </div>
-          
+		<div id="main-slider">
+			<ul class="slides">
+            	<li>
+					<img src="img/slides/1.png" height="650" alt="" />
+					<div class="flex-caption">
+						<h3>공모전 리스트</h3> 
+						<p>공모전 리스트를 보고싶다면 하단의 보러가기 버튼을 클릭해보세요!</p> 
+						<a href="./dynamoDBtest/scan.php" class="btn btn-theme">보러가기</a>
+					</div>
+				</li>
+				<!--<li>
+					<img src="img/slides/1.png" height="600" alt="" />
+					<div class="flex-caption">
+						<h3>공모전 참여현황</h3> 
+						<p>공모전 참여현황이 보고싶다면 하단의 보러가기 버튼을 클릭해보세요!</p> 
+						<a href="./dynamoDBtest/scan.php" class="btn btn-theme">보러가기</a>
+					</div>
+				</li>-->
+			</ul>		
     	</div>
-
+	</section>							
 		
 		 <div class="clear"></div>
 		 <div class="container">	
-		 	<div id="news_notice">
-		 		<h3 class="brown">HOT 공모전 TOP 20</h3>
+		 	<div class="row">
+		 		<h3 class="aligncenter">HOT 공모전 TOP 20</h3>
 		 		<table>
 					<!--<?php
 						$urlRoot="http://169.254.169.254/latest/meta-data/";
 						echo "<tr><td class='contxt'><b>InstanceId</b></td><td>" . file_get_contents($urlRoot . 'instance-id') . "</td></tr>";
 						echo "<tr><td class='contxt'><b>Availability Zone</b></td><td>" . file_get_contents($urlRoot . 'placement/availability-zone') . "</td></tr>";
 						//공모전 리스트 가져오기
-?>-->
+					?>-->
 
-	<?php
-	include "./dynamoDBtest/scan.php"
-?>
+				<?php
+				include "./dynamoDBtest/scan.php"
+				?>
 
 		 		</table>
 		 	</div>
@@ -126,8 +142,8 @@
 			<hr>
 			
 			<div id="copy">
-			Copyright 2016 kyes Inc. all rights reserved 
-			contact mail : wingofbluesky@kgitbank.co.kr Tel: +82 010-1234-1234
+			
+			contact mail : godharang@gmail.com Tel: +82 010-1234-1234
 			</div>
 			<div id="social">
 				<img src="images/facebook.gif" width="33" height="33" alt="Facebook">
