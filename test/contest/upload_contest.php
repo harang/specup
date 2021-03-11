@@ -1,6 +1,7 @@
 <?
-include "../header.php";
+     $tit = $_POST['number'];
 ?>
+
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -43,6 +44,3 @@ include "../header.php";
 	}
 </script>
 
-<?
-include "../footer.php";
-?>

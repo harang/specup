@@ -35,7 +35,6 @@ $params = [
     'ProjectionExpression' => 'userid, title, content'
 ];
 
-$num = $_POST['idx'];
 
 $date = date("Y-m-d");
 ?>

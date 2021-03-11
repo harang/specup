@@ -69,7 +69,6 @@ try {
 ?>
   <tr>
     <td><input type='checkbox' name='select' value='<?$Board['number'] ?>'/></td>
-    <td><?= $Board['number'] ?></td>
     <td><a href='content.php?idx=<?echo $Board['number'];?>&title=<?echo $Board['title'];?>'><?= $Board['title'] ?></a> </td>
 
 <?php
@@ -96,7 +95,7 @@ try {
 
 ?>
 </table>
-  <a href='upload_form.php' class="btn btn-theme" >글쓰기</a>
+  <button type="button" onclick="location.href='upload_form.php'" class="btn btn-theme" >글쓰기</a>
 </div>
 </article>
 
