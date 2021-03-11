@@ -116,6 +116,7 @@
     	</div>
 	</section>							
 		
+	<section id="content">	
 		 <div class="clear"></div>
 		 <div class="container">	
 		 	<div class="row">
@@ -135,8 +136,9 @@
 		 		</table>
 		 	</div>
 			</div>
-		</article>
-
+							
+    </section>
+	
 
 		<footer>
 			<hr>
