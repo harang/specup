@@ -58,6 +58,6 @@
 			</div>
 		</div>
 		</header>
-	</div>	
+
 <div class="clear"></div>
 	
