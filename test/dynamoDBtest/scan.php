@@ -2,23 +2,7 @@
 
 include "../header.php";
 include "../login/dbconn.php";
-?>
 
-<html>
-	<head>
-	<link href="/basic/css/main.css" rel="stylesheet" type="text/css">
-	<link href="css/bootstrap.min.css" rel="stylesheet" />
-	<link href="css/fancybox/jquery.fancybox.css" rel="stylesheet">
-	<link href="css/jcarousel.css" rel="stylesheet" />
-	<link href="css/flexslider.css" rel="stylesheet" />
-	<link href="js/owl-carousel/owl.carousel.css" rel="stylesheet">
-	<link href="css/style.css" rel="stylesheet" />
-	</head>
-
-
-
-
-<?
 /**
  * Copyright 2010-2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
