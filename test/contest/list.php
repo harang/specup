@@ -32,7 +32,7 @@ $marshaler = new Marshaler();
 
 $params = [
     'TableName' => 'contest',
-    'ProjectionExpression' => 'userid, title, content'
+    'ProjectionExpression' => 'userid, title, content, filename'
 ];
 
 $date = date("Y-m-d");
@@ -41,7 +41,7 @@ $date = date("Y-m-d");
 <article>
 <div class="container">
   <center>
-  <h1> 공모전 참여현황 </h1>
+  <h1> 공모전 참가현황 </h1>
   </center><hr>
   <table>
   <tr>
@@ -61,7 +61,7 @@ try {
     <tr>	   
 	<td><input type='checkbox' name='select' value='<?$contest['userid'] ?>'/></td>   
 	<td><?= $contest['userid'] ?></td>	
-	<td><a href='view.php?idx=<?echo $contest['userid'];?>&title=<?= $contest['title'];?>'><?= $contest['title'] ?></a> </td>
+	<td><a href='view.php?idx=<?echo $contest['userid'];?>&title=<?= $contest['title'];?>&filename=<?= $contest['filename'];?>'><?= $contest['title'] ?></a> </td>
 	<td><?= $contest['content'] ?></td>
 	<td><?= $date ?></td>
 <?

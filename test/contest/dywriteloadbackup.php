@@ -81,6 +81,13 @@ if (isset($_FILES)) {
 	}else{
 		echo("첨부된 파일이 없습니다. 다시 시도해 주세요.");
 	}
+
+echo("파일 이름 - " . $name . "<br>");
+echo("파일 타입 - " . $type . "<br>");
+echo("파일 크기 - " . $size . "<br>");
+echo("파일이 임시로 저장된 위치 - " . $tmp_name . "<br>");
+echo("현재 파일의 에러 코드 - " . $error . "<br>"); //에러코드 0인 경우 문제 없음으로 판단.
+echo($result."<br>");
 ?>
 
 <html>
@@ -111,7 +118,6 @@ if (isset($_FILES)) {
 </table>
 <p><b>전송완료!</b></p>
 <p><a href='../dynamoDBtest/scan.php'>목록가기</a></p>
-<p><a href="http://52.79.240.252/contest/fileDownload.php?filepath=<?= $myfile_save_dir . $name ?>">업로드한 파일 다운로드 하기</a></p>
 </body>
 </html>
 

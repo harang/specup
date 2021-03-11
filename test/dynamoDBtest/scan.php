@@ -2,7 +2,23 @@
 
 include "../header.php";
 include "../login/dbconn.php";
+?>
 
+<html>
+	<head>
+	<link href="/basic/css/main.css" rel="stylesheet" type="text/css">
+	<link href="css/bootstrap.min.css" rel="stylesheet" />
+	<link href="css/fancybox/jquery.fancybox.css" rel="stylesheet">
+	<link href="css/jcarousel.css" rel="stylesheet" />
+	<link href="css/flexslider.css" rel="stylesheet" />
+	<link href="js/owl-carousel/owl.carousel.css" rel="stylesheet">
+	<link href="css/style.css" rel="stylesheet" />
+	</head>
+
+
+
+
+<?
 /**
  * Copyright 2010-2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
@@ -36,16 +52,16 @@ $marshaler = new Marshaler();
 //Expression attribute values
 $eav = $marshaler->marshalJson('
     {
-        ":start_yr": 1920,
-        ":end_yr": 1925
+        ":start_num": 1,
+        ":end_num": 100
     }
 ');
 
 $params = [
-    'TableName' => 'MoviesTest1',
-    'ProjectionExpression' => '#yr, title, info.rating',
-    'FilterExpression' => '#yr between :start_yr and :end_yr',
-    'ExpressionAttributeNames'=> [ '#yr' => 'year' ],
+    'TableName' => 'Board',
+    'ProjectionExpression' => '#num, title, info.rating',
+    'FilterExpression' => '#num between :start_num and :end_num',
+    'ExpressionAttributeNames'=> [ '#num' => 'number' ],
     'ExpressionAttributeValues'=> $eav
 ];
 
@@ -53,16 +69,12 @@ $params = [
 
 <article>
 <div class="container">
-  <h1> Notice </h1>
+  <h1> 공모전 목록 </h1>
   <a href='upload_form.php' class="btn btn-theme" >글쓰기</a>
   <table>
   <tr>
     <th></th>
-    <th>Year</th>
-    <th>Title</th>
-    <th>Rating</th></tr>
-
-
+    <th>제목</th>
 
 <?php
 try {
@@ -70,14 +82,14 @@ try {
         $result = $dynamodb->scan($params);
 
         foreach ($result['Items'] as $i) {
-            $movie = $marshaler->unmarshalItem($i);
+            $Board = $marshaler->unmarshalItem($i);
         
 ?>
   <tr>
-    <td><input type='checkbox' name='select' value='<?$movie['year'] ?>'/></td>
-    <td><?= $movie['year'] ?></td>
-    <td><a href='content.php?idx=<?echo $movie['year'];?>&title=<?echo $movie['title'];?>'><?= $movie['title'] ?></a> </td>
-    <td><?= $movie['info']['rating'] ?></td></tr>
+    <td><input type='checkbox' name='select' value='<?$Board['number'] ?>'/></td>
+    <?//= $Board['number'] ?>
+    <td><a href='content.php?idx=<?echo $Board['number'];?>&title=<?echo $Board['title'];?>'><?= $Board['title'] ?></a> </td>
+    <td><?= $Board['info']['진행기간'] ?></td></tr>
 
 
 <?php

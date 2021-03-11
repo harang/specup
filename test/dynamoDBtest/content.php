@@ -1,13 +1,6 @@
 <?
 include "../header.php";
 
-    $year = $_GET['idx'];
-    $title = $_GET['title'];
-
-    echo $year;
-    echo $title;
-
-
 /**
  * Copyright 2010-2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
@@ -37,11 +30,14 @@ $sdk = new Aws\Sdk([
 $dynamodb = $sdk->createDynamoDb();
 $marshaler = new Marshaler();
 
-$tableName = 'MoviesTest1';
+$tableName = 'Board';
+
+$number = $_GET['idx'];
+$title = $_GET['title'];
 
 $key = $marshaler->marshalJson('
     {
-        "year": ' . $year . ', 
+        "number": ' . $number . ', 
         "title": "' . $title . '"
     }
 ');
@@ -50,31 +46,42 @@ $params = [
     'TableName' => $tableName,
     'Key' => $key
 ];
-
+?>
+ <center>
+ <h1>공모전  상세 내역 </h1>
+ <hr>
+ <table>
+ </tr>
+    <th></th>
+    <th>제목</th>
+    <th>진행기간</th>
+    <th>진행사항</th>
+<?
 try {
     $result = $dynamodb->getItem($params);
-    print_r($result["Item"]);
+    // print_r($result["Item"]);
+     $num = $result["Item"]["number"]["N"];
+     $tit = $result["Item"]["title"]["S"];
+     $term = $result["Item"]["info"]["M"]["진행기간"]["S"];
+     $state = $result["Item"]["info"]["M"]["진행사항"]["L"][0]["S"];
+?>
+  <tr>
+    <td></td>
+    <td><?= $tit?></td>
+    <td><?= $term ?></td>
+    <td><?= $state ?></td>
+  </tr>
+  </table>
+    <textarea name="content" rows="10" style="width:100%; border: 0;"></textarea>
+    <hr>
+    <input type='button' value='공모전 신청' onClick='location.href="../contest/upload_contest.php"' />
+    <input type='button' value='참가현황' onClick='location.href="../contest/list.php?idx=<?echo $num;?> "' />
+  </center>
+<?
 
 } catch (DynamoDbException $e) {
     echo "Unable to get item:\n";
     echo $e->getMessage() . "\n";
 }
 
-
-
-
-
-
 ?>
-
-
-
-<html>
-<br>
-    <input type='button' value='공모전 신청' onClick='location.href="../contest/upload_contest.php"' />
-
-
-
-</html>
-
-

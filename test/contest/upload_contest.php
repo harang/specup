@@ -24,7 +24,8 @@ include "../header.php";
 
 		</table>
 		 <input type="file" name="fileupload" id="fileupload">
-                 <input type="submit" value="신청하기">
+		 <input type="submit" value="신청하기">
+		 <input type="button" value ="목록" onclick="location.href='../dynamoDBtest/scan.php'">
 	</form>
 </body>
 </html>

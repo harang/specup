@@ -1,6 +1,6 @@
 <?php
 	$getpath = $_GET["filepath"];
-	$filepath = $_SERVER['upload/'] . "/" . $getpath;
+	$filepath = $_SERVER['/var/www/html/test/contest/upload'] . "/" . $getpath;
 	
 	$filesize = filesize($filepath);
 	$path_parts = pathinfo($filepath);

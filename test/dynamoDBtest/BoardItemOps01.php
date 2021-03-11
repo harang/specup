@@ -18,6 +18,7 @@ require '/var/www/html/vendor/autoload.php';
 date_default_timezone_set('UTC');
 
 use Aws\DynamoDb\Exception\DynamoDbException;
+use Aws\DynamoDb\Marshaler;
 
 $sdk = new Aws\Sdk([
     'region'   => 'ap-northeast-2',
@@ -25,46 +26,35 @@ $sdk = new Aws\Sdk([
 ]);
 
 $dynamodb = $sdk->createDynamoDb();
+$marshaler = new Marshaler();
+
+$tableName = 'Board';
+
+$number = 21;
+$title = '테스트입니다아아아아아';
+
+$item = $marshaler->marshalJson('
+    {
+        "number": ' . $number . ',
+        "title": "' . $title . '"
+    }
+');
 
 $params = [
     'TableName' => 'Board',
-    'KeySchema' => [
-        [
-            'AttributeName' => 'number',
-            'KeyType' => 'HASH'  //Partition key
-        ],
-        [
-            'AttributeName' => 'title',
-            'KeyType' => 'RANGE'  //Sort key
-        ]
-    ],
-    'AttributeDefinitions' => [
-        [
-            'AttributeName' => 'number',
-            'AttributeType' => 'N'
-        ],
-        [
-            'AttributeName' => 'title',
-            'AttributeType' => 'S'
-        ],
-
-    ],
-    'ProvisionedThroughput' => [
-        'ReadCapacityUnits' => 10,
-        'WriteCapacityUnits' => 10
-    ]
+    'Item' => $item
 ];
 
+
 try {
-    $result = $dynamodb->createTable($params);
-    echo 'Created table.  Status: ' . 
-        $result['TableDescription']['TableStatus'] ."\n";
+    $result = $dynamodb->putItem($params);
+    echo "Added item: $number - $title\n";
 
 } catch (DynamoDbException $e) {
-    echo "Unable to create table:\n";
+    echo "Unable to add item:\n";
     echo $e->getMessage() . "\n";
 }
-
+?>
 
 
 

@@ -60,7 +60,7 @@ try {
 <table>
 <tr>
         <td>아이디: </td>
-        <td><?=$userid;?></td>
+        <td><?=$contest['userid'];?></td>
 </tr>
 <tr>
         <td>제목: </td>
@@ -71,15 +71,19 @@ try {
         <td><?=$content;?></td>
 </tr>
 <tr>
-        <td>파일다운받기: </td>
+        <td>파일명: </td>
         <td><?=$fileename;?></td>
+<?
+if(!empty($row2))
+        echo "<img src='".$row2['path'].$row2['filename']."' />";
+else
+        echo "이미지 없음";
+?>
         </td>
 </tr>
 </table>
+<p><b>확인</b></p>
 <p><a href='list.php'>목록가기</a></p>
-<p><a href="http://52.79.240.252/contest/fileDownload.php?filepath=<?= $myfile_save_dir . $name ?>">업로드
-한 파일 다운로드 하기</a></p>
-
 </body>
 </html>
 

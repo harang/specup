@@ -1,4 +1,4 @@
-<?php include "../header.php";?>
+<?php include "header.php" ?>
 <?php include "sub_img.php";?>
 <?php include "sub_menu.php";?>
 <?php
