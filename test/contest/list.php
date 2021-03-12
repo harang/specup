@@ -31,7 +31,6 @@ $marshaler = new Marshaler();
 $tableName = 'Entryform';
 $num = $_POST['idx'];
 
-
 $eav = $marshaler->marshalJson('
     {
         ":titnum": 7
