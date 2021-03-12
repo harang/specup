@@ -63,6 +63,7 @@ try {
      $tit = $result["Item"]["title"]["S"];
      $term = $result["Item"]["info"]["M"]["진행기간"]["S"];
      $state = $result["Item"]["info"]["M"]["진행사항"]["L"][0]["S"];
+     $add = $result["Item"]["info"]["M"]["content"]["S"];
 ?>
   <tr>
     <td></td>
@@ -71,7 +72,8 @@ try {
     <td><?= $state ?></td>
   </tr>
     </table>
-    <img src="https://itbankbucket.s3.ap-northeast-2.amazonaws.com/testcat.jpg">
+  <!__  <img src="https://project-contest-detail.s3.ap-northeast-2.amazonaws.com/contest_7.png">    
+    <img src="<?= $add;?>">
     <hr>
     <input type='button' value='공모전 신청' onClick='location.href="../contest/upload_contest.php"' />
     <input type='button' value='참가현황' onClick='location.href="../contest/list.php?idx=<?echo $num;?> "' />
