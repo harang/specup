@@ -1,4 +1,8 @@
-<?
+
+
+<?php
+
+
 /**
  * Copyright 2010-2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
@@ -11,7 +15,7 @@
  * This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
  * CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
-*/
+ */
 
 require '/var/www/html/vendor/autoload.php';
 
@@ -28,69 +32,68 @@ $sdk = new Aws\Sdk([
 $dynamodb = $sdk->createDynamoDb();
 
 $marshaler = new Marshaler();
-$tableName = 'Entryform';
-$num = $_GET['idx'];
 
+//Expression attribute values
 $eav = $marshaler->marshalJson('
     {
-        ":titnum": '.$num.'
+        ":start_num": 1,
+        ":end_num": 100
     }
 ');
 
 $params = [
-    'TableName' => $tableName,
-    'KeyConditionExpression' => '#num = :titnum',
+    'TableName' => 'Board',
+    'ProjectionExpression' => '#num, title',
+    'FilterExpression' => '#num between :start_num and :end_num',
     'ExpressionAttributeNames'=> [ '#num' => 'number' ],
     'ExpressionAttributeValues'=> $eav
 ];
-
 
 ?>
 
 <article>
 <div class="container">
-  <center>
-  <h1> 공모전 참여현황 </h1>
-  </center><hr>
   <table>
   <tr>
-    <th></th>
-    <th>이름</th>
-    <th>소속</th>
-    <th>제목</th>
-    <th>신청상태</th>
-  </tr>
 
-
-<?
+<?php
 try {
-	$result = $dynamodb->query($params);
-		
+    while (true) {
+        $result = $dynamodb->scan($params);
+
         foreach ($result['Items'] as $i) {
-	// echo $marshaler->unmarshalValue($entry['number']) . ': ' .
- 	  //    $marshaler->unmarshalValue($entry['title']) . "\n";
-	$entry = $marshaler->unmarshalItem($i);
+            $Board = $marshaler->unmarshalItem($i);
+        
+?>
+  <tr>
+    <td><input type='checkbox' name='select' value='<?$Board['number'] ?>'/> &nbsp  </td>
+    <td><a href='dynamoDBtest/content.php?idx=<?echo $Board['number'];?>&title=<?echo $Board['title'];?>'><?= $Board['title'] ?></a> </td>
+
+<?php
+	}
 ?>
 
-    <tr>
-	<!--<td><input type='checkbox' name='select' value='<?$Entryform['number'] ?>'/></td>
-	<td><a href='view.php?idx=<?echo $num;?>'><?= $Entryform['title']?></a></td>
-    -->
-    <td><input type='checkbox' name='select' value='<?$Board['number'] ?>'/> </td>
-    <td><?echo $entry['info']['이름']?> </td>
-    <td><?echo $entry['info']['소속']?></td>
-    <td><?echo $entry['title']?></td>
-    <td><?echo $entry['info']['신청상태'] ?></td>
-    </tr>
 
-<?
+<?php
+
+
+
+        if (isset($result['LastEvaluatedKey'])) {
+            $params['ExclusiveStartKey'] = $result['LastEvaluatedKey'];
+        } else {
+            break;
+        }
     }
+
 } catch (DynamoDbException $e) {
     echo "Unable to scan:\n";
     echo $e->getMessage() . "\n";
-}?>
+}
 
+
+?>
 </table>
+  <button type="button" onclick="location.href='upload_form.php'" class="btn btn-theme" >글쓰기</a>
 </div>
 </article>
 

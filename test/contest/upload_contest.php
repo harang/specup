@@ -1,5 +1,6 @@
 <?
-     $tit = $_POST['number'];
+session_start();
+//$tit = $_GET['number'];
 ?>
 
 <html>
@@ -13,7 +14,7 @@
 		<table>
 		<tr>
 			<td>아이디:</td>
-			<td><input type="text" name="userid" size="35" maxlength="30"></td>
+			<td><input type="text" name="userid" size="35" maxlength="30" value=<?echo $_SESSION['userid'];?> ></td>
 		</tr>
 		<tr>
 			<td>제목:</td>

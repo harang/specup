@@ -53,6 +53,9 @@ $params = [
 
 <article>
 <div class="container">
+
+  <h1 align="center" >공모전 리스트</h1>
+
   <table>
   <tr>
     <th></th>
