@@ -28,7 +28,7 @@ $sdk = new Aws\Sdk([
 $dynamodb = $sdk->createDynamoDb();
 
 $marshaler = new Marshaler();
-$tableName = 'Entryform';
+$tableName = 'entryform';
 $num = $_GET['idx'];
 
 $eav = $marshaler->marshalJson('
@@ -79,7 +79,7 @@ try {
     <td><input type='checkbox' name='select' value='<?$Board['number'] ?>'/> </td>
     <td><?echo $entry['info']['이름']?> </td>
     <td><?echo $entry['info']['소속']?></td>
-    <td><?echo $entry['title']?></td>
+    <td><a href='view.php?idx=<?echo $num;?>&title=<?echo $entry['title'];?>'><?echo $entry['title']?></a></td>
     <td><?echo $entry['info']['신청상태'] ?></td>
     </tr>
 
@@ -91,6 +91,8 @@ try {
 }?>
 
 </table>
+<hr>
+ <input type="button" value ="목록" onclick="location.href='../dynamoDBtest/scan.php'">
 </div>
 </article>
 

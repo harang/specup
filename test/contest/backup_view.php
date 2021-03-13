@@ -1,4 +1,7 @@
 <?
+session_start();
+
+
 /**
  * Copyright 2010-2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
@@ -25,17 +28,19 @@ $sdk = new Aws\Sdk([
     'version'  => 'latest'
 ]);
 
+$myfile_save_dir = '/var/www/html/test/contest/upload/';
+
 $dynamodb = $sdk->createDynamoDb();
 $marshaler = new Marshaler();
 
-$tableName = 'contest';
+$tableName = 'entryform';
 
-$userid = $_GET['idx'];
+$number = $_GET['idx'];
 $title = $_GET['title'];
 
 $key = $marshaler->marshalJson('
     {
-	"userid": "'. $userid .'",
+	"userid": '. $number .',
 	"title": "' . $title . '"
     }
 ');
@@ -47,7 +52,14 @@ $params = [
 
 try {
     $result = $dynamodb->getItem($params);
-    print_r($result["Item"]);
+     //print_r($result["Item"]);
+     echo $number = $result["Item"]["number"]["N"];
+     echo $tit = $result["Item"]["title"]["S"];
+     echo $con = $result["Item"]["content"]["S"];
+     echo $file =  $result["Item"]["filename"]["S"];
+    
+     echo $result["Item"]["filename"]["S"];
+
 
 ?>
 <html>
@@ -60,30 +72,26 @@ try {
 <table>
 <tr>
         <td>아이디: </td>
-        <td><?=$contest['userid'];?></td>
+        <td><?=$id;?></td>
 </tr>
 <tr>
         <td>제목: </td>
-        <td><?=$title;?></td>
+        <td><?=$tit;?></td>
 </tr>
 <tr>
         <td>내용: </td>
-        <td><?=$content;?></td>
+        <td><?=$con;?></td>
 </tr>
 <tr>
-        <td>파일명: </td>
-        <td><?=$fileename;?></td>
-<?
-if(!empty($row2))
-        echo "<img src='".$row2['path'].$row2['filename']."' />";
-else
-        echo "이미지 없음";
-?>
+        <td>업로드파일: </td>
+        <td><?=$file;?></td>
         </td>
 </tr>
 </table>
-<p><b>확인</b></p>
 <p><a href='list.php'>목록가기</a></p>
+<p><a href="http://52.79.240.252/contest/fileDownload.php?filepath=<?= $myfile_save_dir . $file ?>">업로드
+한 파일 다운로드 하기</a></p>
+
 </body>
 </html>
 

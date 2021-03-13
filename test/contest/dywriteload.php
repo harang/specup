@@ -1,5 +1,4 @@
 <?
-
 include "../header.php";
 /**
  * Copyright 2010-2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
@@ -19,8 +18,11 @@ require '/var/www/html/vendor/autoload.php';
 
 date_default_timezone_set('UTC');
 
+// dynamodb 
 use Aws\DynamoDb\Exception\DynamoDbException;
 use Aws\DynamoDb\Marshaler;
+use Aws\S3\S3Client;
+use Aws\S3\Exception\S3Exception;
 
 $sdk = new Aws\Sdk([
     'region'   => 'ap-northeast-2',
@@ -30,24 +32,33 @@ $sdk = new Aws\Sdk([
 $dynamodb = $sdk->createDynamoDb();
 $marshaler = new Marshaler();
 
-$tableName = 'contest';
+$tableName = 'entryform';
 
-$userid = $_POST['userid'];
+$number = $_POST['idx'];
 $title = $_POST['title'];
+$userid = $_POST['userid'];
+$belong = $_POST['belong'];
+$username = $_POST['username'];
 $content = $_POST['content'];
 $filename = $_FILES["fileupload"]["name"];
 
+// dynamodb 연동 완료
 $item = $marshaler->marshalJson('
     {
-        "userid": "' . $userid . '",
+        "number": ' . $number . ',
         "title": "' . $title . '",
-	"content": "' .$content. '",
-	"filename": "' .$filename. '"
+	"info": {
+            "소속": "'.$belong.'",
+	    "이름": "'.$username.'",
+ 	    "id": "'.$userid.'",
+	    "내용": "'.$content.'",
+	    "파일이름": "'.$filename.'"
+	}
     }
 ');
 
 $params = [
-    'TableName' => 'contest',
+    'TableName' => 'entryform',
     'Item' => $item
 ];
 
@@ -60,27 +71,52 @@ try {
     echo $e->getMessage() . "\n";
 }
 
-?>
-<?
+// 파일 업로드 코드
 $myfile_save_dir = '/var/www/html/test/contest/upload/';
 
+// isset 변수가 설정되었는지 확인해주는함수
 if (isset($_FILES)) {
-    $name = $_FILES["fileupload"]["name"];
-    $type = $_FILES["fileupload"]["type"];
-    $size = $_FILES["fileupload"]["size"];
-	$tmp_name = $_FILES["fileupload"]["tmp_name"];
-	$error = $_FILES["fileupload"]["error"];
+    	$name = $_FILES["fileupload"]["name"];
+    	//$type = $_FILES["fileupload"]["type"];
+    	//$size = $_FILES["fileupload"]["size"];
+        $tmp_name = $_FILES["fileupload"]["tmp_name"];
+        //$error = $_FILES["fileupload"]["error"];
 
-	//서버에 임시로 저장된 파일은 스크립트가 종료되면 사라지므로 파일을 이동해야함.
-	$upload_result = move_uploaded_file($tmp_name, $myfile_save_dir.$name);
+        //서버에 임시로 저장된 파일은 스크립트가 종료되면 사라지므로 파일을 이동해야함.
+        $upload_result = move_uploaded_file($tmp_name, $myfile_save_dir.$name);
 
-	if($upload_result){
-		$result = "파일 업로드 성공 경로 - " . $myfile_save_dir;
-	}
+        if($upload_result){
+                $result = "파일 업로드 성공 경로 - " . $myfile_save_dir;
+        }
 
-	}else{
-		echo("첨부된 파일이 없습니다. 다시 시도해 주세요.");
-	}
+        }else{
+                echo("첨부된 파일이 없습니다. 다시 시도해 주세요.");
+        }
+//s3업로드
+
+$s3Client = S3Client::factory(array(
+'region' => 'ap-northeast-2',
+'version' => 'latest',
+'signature' => 'v4',
+'key'    => 'AKIA5QVGWJCRHM4LLROL',
+'secret' => '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'
+));
+
+//$file_handler = fopen('/var/www/html/test/contest/list.php', 'r');
+
+try{
+        $result = $s3Client->putObject(array(
+        'Bucket' => 'project-contest-apply', // s3버킷 명
+        'Key'    => $name,  // 파일명 설정
+        'Body'   => $myfile_save_dir.$name, // 경로 설정
+        'ACL'    => 'public-read'
+        ));
+
+        // Print the URL to the object.
+        // echo $result['ObjectURL'] . PHP_EOL;
+} catch (S3Exception $e) {
+    echo $e->getMessage() . PHP_EOL;
+}
 ?>
 
 <html>
@@ -90,18 +126,17 @@ if (isset($_FILES)) {
 </head>
 <body>
 <h2>전송이 완료되었습니다!</h2>
-<h3>전송 내용보기</h3>
 <table>
 <tr>
-        <td>아이디:</td>
-        <td><?=$userid;?></td>
+        <td>이름:</td>
+        <td><?=$username;?></td>
 </tr>
 <tr>
-        <td>전송제목:</td>
+        <td>제목:</td>
         <td><?=$title;?></td>
 </tr>
 <tr>
-        <td>전송내용:</td>
+        <td>내용:</td>
         <td><?=$content;?></td>
 </tr>
 <tr>

@@ -100,7 +100,7 @@
 			<div class="flex-caption">
 				<h3>공모전 리스트</h3> 
 				<p>공모전 리스트를 보고싶다면 하단의 보러가기 버튼을 클릭해보세요!</p> 
-				<a href="portfolio.html" class="btn btn-theme">보러가기</a>
+				<a href="dynamoDBtest/scan.php" class="btn btn-theme">보러가기</a>
 			</div>
 		
 		</div>

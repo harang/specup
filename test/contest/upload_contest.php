@@ -1,5 +1,6 @@
 <?
 session_start();
+$number = $_GET['idx'];
 //$tit = $_GET['number'];
 ?>
 
@@ -9,21 +10,33 @@ session_start();
 	<title>공모전 신청 페이지</title>
 </head>
 <body>
-	<form action="dywriteload.php" enctype="multipart/form-data" name="form" method="post" onsubmit="return fileCheck();">
+ <form action="dywriteload.php" enctype="multipart/form-data" name="form" method="post" onsubmit="return fileCheck();">
 		<h2>공모전 신청하기</h2>
 		<table>
 		<tr>
+                        <td>글번호:</td>
+			<td><input type="text" name="idx" size="10" maxlength="10" value=<?echo $number;?> readonly ></td>
+                </tr>
+		<tr>
 			<td>아이디:</td>
-			<td><input type="text" name="userid" size="35" maxlength="30" value=<?echo $_SESSION['userid'];?> ></td>
+			<td><input type="text" name="userid" size="35" maxlength="30" value=<?echo $_SESSION['userid'];?>  readonly ></td>
+		</tr>	
+		<tr>
+			<td>이름 :</td>
+			<td><input type="text" name="username" size="35" maxlength="30" value=<?echo $_SESSION['username'];?>  readonly ></td>
+		</tr>
+		<tr>
+			<td>소속 :</td>
+			<td><input type="text" name="belong" size="35" maxlength="30" value=""  ></td>
 		</tr>
 		<tr>
 			<td>제목:</td>
-			<td><input type="text" name="title" size="35" maxlength="30"></td>
+			<td><input type="text" name="title" size="35" maxlength="30" ></td>
 		</tr>
 		<tr>
 			<td>내용:</td>
-			<td><textarea rows="10" cols="37"  name="content"></textarea></td>
-
+			<td><textarea rows="10" cols="37"  name="content" value="content" ></textarea></td>
+		</tr>
 		</table>
 		 <input type="file" name="fileupload" id="fileupload">
 		 <input type="submit" value="신청하기">
@@ -44,4 +57,3 @@ session_start();
 		}
 	}
 </script>
-

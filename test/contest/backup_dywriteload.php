@@ -1,5 +1,4 @@
 <?
-
 include "../header.php";
 /**
  * Copyright 2010-2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
@@ -30,24 +29,30 @@ $sdk = new Aws\Sdk([
 $dynamodb = $sdk->createDynamoDb();
 $marshaler = new Marshaler();
 
-$tableName = 'contest';
+$tableName = 'entryform';
 
-$userid = $_POST['userid'];
+$number = $_POST['idx'];
 $title = $_POST['title'];
+$userid = $_POST['userid'];
+$belong = $_POST['belong'];
+$username = $_POST['username'];
 $content = $_POST['content'];
-$filename = $_FILES["fileupload"]["name"];
 
 $item = $marshaler->marshalJson('
     {
-        "userid": "' . $userid . '",
+        "number": ' . $number . ',
         "title": "' . $title . '",
-	"content": "' .$content. '",
-	"filename": "' .$filename. '"
+	"info": {
+            "소속": "'.$belong.'",
+	    "이름": "'.$username.'",
+ 	    "id": "'.$userid.'",
+            "내용": "'.$content.'"
+	}
     }
 ');
 
 $params = [
-    'TableName' => 'contest',
+    'TableName' => 'entryform',
     'Item' => $item
 ];
 
@@ -60,34 +65,25 @@ try {
     echo $e->getMessage() . "\n";
 }
 
-?>
-<?
 $myfile_save_dir = '/var/www/html/test/contest/upload/';
 
 if (isset($_FILES)) {
     $name = $_FILES["fileupload"]["name"];
     $type = $_FILES["fileupload"]["type"];
     $size = $_FILES["fileupload"]["size"];
-	$tmp_name = $_FILES["fileupload"]["tmp_name"];
-	$error = $_FILES["fileupload"]["error"];
+        $tmp_name = $_FILES["fileupload"]["tmp_name"];
+        $error = $_FILES["fileupload"]["error"];
 
-	//서버에 임시로 저장된 파일은 스크립트가 종료되면 사라지므로 파일을 이동해야함.
-	$upload_result = move_uploaded_file($tmp_name, $myfile_save_dir.$name);
+        //서버에 임시로 저장된 파일은 스크립트가 종료되면 사라지므로 파일을 이동해야함.
+        $upload_result = move_uploaded_file($tmp_name, $myfile_save_dir.$name);
 
-	if($upload_result){
-		$result = "파일 업로드 성공 경로 - " . $myfile_save_dir;
-	}
+        if($upload_result){
+                $result = "파일 업로드 성공 경로 - " . $myfile_save_dir;
+        }
 
-	}else{
-		echo("첨부된 파일이 없습니다. 다시 시도해 주세요.");
-	}
-
-echo("파일 이름 - " . $name . "<br>");
-echo("파일 타입 - " . $type . "<br>");
-echo("파일 크기 - " . $size . "<br>");
-echo("파일이 임시로 저장된 위치 - " . $tmp_name . "<br>");
-echo("현재 파일의 에러 코드 - " . $error . "<br>"); //에러코드 0인 경우 문제 없음으로 판단.
-echo($result."<br>");
+        }else{
+                echo("첨부된 파일이 없습니다. 다시 시도해 주세요.");
+        }
 ?>
 
 <html>
@@ -118,6 +114,7 @@ echo($result."<br>");
 </table>
 <p><b>전송완료!</b></p>
 <p><a href='../dynamoDBtest/scan.php'>목록가기</a></p>
+<p><a href="http://52.79.240.252/contest/fileDownload.php?filepath=<?= $myfile_save_dir . $name ?>">업로드한 파일 다운로드 하기</a></p>
 </body>
 </html>
 

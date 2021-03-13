@@ -99,6 +99,7 @@ try {
 ?>
 </table>
   <button type="button" onclick="location.href='upload_form.php'" class="btn btn-theme" >글쓰기</a>
+  <button type="button" onclick="location.href='../index.php'" class="btn btn-theme" >돌아가기</a>
 </div>
 </article>
 

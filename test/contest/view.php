@@ -1,4 +1,7 @@
 <?
+session_start();
+
+
 /**
  * Copyright 2010-2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
@@ -19,6 +22,8 @@ date_default_timezone_set('UTC');
 
 use Aws\DynamoDb\Exception\DynamoDbException;
 use Aws\DynamoDb\Marshaler;
+use Aws\S3\S3Client;
+use Aws\S3\Exception\S3Exception;
 
 $sdk = new Aws\Sdk([
     'region'   => 'ap-northeast-2',
@@ -30,14 +35,14 @@ $myfile_save_dir = '/var/www/html/test/contest/upload/';
 $dynamodb = $sdk->createDynamoDb();
 $marshaler = new Marshaler();
 
-$tableName = 'contest';
+$tableName = 'entryform';
 
-$userid = $_GET['idx'];
+$number = $_GET['idx'];
 $title = $_GET['title'];
 
 $key = $marshaler->marshalJson('
     {
-	"userid": "'. $userid .'",
+	"number": '. $number .',
 	"title": "' . $title . '"
     }
 ');
@@ -50,14 +55,34 @@ $params = [
 try {
     $result = $dynamodb->getItem($params);
      //print_r($result["Item"]);
-     $id = $result["Item"]["userid"]["S"];
-     $tit = $result["Item"]["title"]["S"];
-     $con = $result["Item"]["content"]["S"];
-     $file =  $result["Item"]["filename"]["S"];
-    
-     echo $result["Item"]["filename"]["S"];
+     $number = $result["Item"]["number"]["N"];
+     $title = $result["Item"]["title"]["S"];
+     $id = $result["Item"]["info"]["M"]["id"]["S"];
+     $con = $result["Item"]["info"]["M"]["내용"]["S"];
+     $belong = $result["Item"]["info"]["M"]["소속"]["S"];
+     $name = $result["Item"]["info"]["M"]["이름"]["S"];
+     $file = $result["Item"]["info"]["M"]["파일이름"]["S"];
 
+?>
+<?
+// s3 get ( 다운로드)
+$s3Client = S3Client::factory(array(
+'region' => 'ap-northeast-2',
+'version' => 'latest',
+'signature' => 'v4',
+'key'    => 'AKIA5QVGWJCRHM4LLROL',
+'secret' => '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'
+));
 
+try{
+        $result = $s3Client->getObject(array(
+        'Bucket' => 'project-contest-apply', // s3버킷 명
+        'Key'    => $name  // 파일명 설정
+        ));
+
+} catch (S3Exception $e) {
+    echo $e->getMessage() . PHP_EOL;
+}
 ?>
 <html>
 <head>
@@ -68,12 +93,20 @@ try {
 <h2>지원서</h2>
 <table>
 <tr>
+        <td>제목: </td>
+        <td><?=$title;?></td>
+</tr>
+<tr>
         <td>아이디: </td>
         <td><?=$id;?></td>
 </tr>
 <tr>
-        <td>제목: </td>
-        <td><?=$tit;?></td>
+        <td>이름: </td>
+        <td><?=$name;?></td>
+</tr>
+<tr>
+        <td>소속: </td>
+        <td><?=$belong;?></td>
 </tr>
 <tr>
         <td>내용: </td>
@@ -85,9 +118,7 @@ try {
         </td>
 </tr>
 </table>
-<p><a href='list.php'>목록가기</a></p>
-<p><a href="http://52.79.240.252/contest/fileDownload.php?filepath=<?= $myfile_save_dir . $file ?>">업로드
-한 파일 다운로드 하기</a></p>
+<button type="button" onclick="location.href='../dynamoDBtest/scan.php'" class="btn btn-theme" >목록</a>
 
 </body>
 </html>

@@ -27,10 +27,10 @@ $sdk = new Aws\Sdk([
 $dynamodb = $sdk->createDynamoDb();
 
 $params = [
-    'TableName' => 'contest',
+    'TableName' => 'entryform',
     'KeySchema' => [
         [
-            'AttributeName' => 'userid',
+            'AttributeName' => 'number',
             'KeyType' => 'HASH'  //Partition key
         ],
         [
@@ -40,8 +40,8 @@ $params = [
     ],
     'AttributeDefinitions' => [
         [
-            'AttributeName' => 'userid',
-            'AttributeType' => 'S'
+            'AttributeName' => 'number',
+            'AttributeType' => 'N'
         ],
         [
             'AttributeName' => 'title',
