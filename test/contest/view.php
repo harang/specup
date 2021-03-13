@@ -62,9 +62,11 @@ try {
      $belong = $result["Item"]["info"]["M"]["소속"]["S"];
      $name = $result["Item"]["info"]["M"]["이름"]["S"];
      $file = $result["Item"]["info"]["M"]["파일이름"]["S"];
+} catch (DynamoDbException $e) {
+    echo "Unable to get item:\n";
+    echo $e->getMessage() . "\n";
+}
 
-?>
-<?
 // s3 get ( 다운로드)
 $s3Client = S3Client::factory(array(
 'region' => 'ap-northeast-2',
@@ -74,15 +76,6 @@ $s3Client = S3Client::factory(array(
 'secret' => 'Awhyfz83L2oQoG7JkzleuPfP8/R44TQAvJRGsH99'
 ));
 
-try{
-        $result = $s3Client->getObject(array(
-        'Bucket' => 'project-contest-apply', // s3버킷 명
-        'Key'    => $name  // 파일명 설정
-        ));
-
-} catch (S3Exception $e) {
-    echo $e->getMessage() . PHP_EOL;
-}
 ?>
 <html>
 <head>
@@ -118,16 +111,32 @@ try{
         </td>
 </tr>
 </table>
-<button type="button" onclick="location.href='../dynamoDBtest/scan.php'" class="btn btn-theme" >목록</a>
+
+<form method="post">
+	<input type="submit" name="getItem" id="getItem" value="다운로드" /></br>
+</form>
+
+<input type="button" onclick="location.href='../dynamoDBtest/scan.php'" value="목록" >
+<?
+function s3getItem(){
+
+	try{
+        	$result = $s3Client->getObject(array(
+	        'Bucket' => 'project-contest-apply', // s3버킷 명
+		'Key'    => $file,  // 파일명 설정
+		'SaveAs' => fopen($file,'w')
+	));
+		ob_clean();
+		header("Content-Type: {$result['ContentType']}");
+		echo $result['Body'];
+        } catch (S3Exception $e) {
+ 	 	echo $e->getMessage() . PHP_EOL;
+	}	
+}
+if(array_key_exists('getItem',$_POST)){
+	s3getItem();
+}
+?>
 
 </body>
 </html>
-
-
-<?
-} catch (DynamoDbException $e) {
-    echo "Unable to get item:\n";
-    echo $e->getMessage() . "\n";
-} 
-?>
-
