@@ -62,7 +62,6 @@ $params = [
     'Item' => $item
 ];
 
-
 try {
     $result = $dynamodb->putItem($params);
 
@@ -77,23 +76,24 @@ $myfile_save_dir = '/var/www/html/test/contest/upload/';
 // isset 변수가 설정되었는지 확인해주는함수
 if (isset($_FILES)) {
     	$name = $_FILES["fileupload"]["name"];
-    	//$type = $_FILES["fileupload"]["type"];
-    	//$size = $_FILES["fileupload"]["size"];
+    	$type = $_FILES["fileupload"]["type"];
+    	$size = $_FILES["fileupload"]["size"];
         $tmp_name = $_FILES["fileupload"]["tmp_name"];
-        //$error = $_FILES["fileupload"]["error"];
-
+        $error = $_FILES["fileupload"]["error"];
         //서버에 임시로 저장된 파일은 스크립트가 종료되면 사라지므로 파일을 이동해야함.
         $upload_result = move_uploaded_file($tmp_name, $myfile_save_dir.$name);
-
-        if($upload_result){
+	
+	if($upload_result){
                 $result = "파일 업로드 성공 경로 - " . $myfile_save_dir;
         }
-
+	
         }else{
                 echo("첨부된 파일이 없습니다. 다시 시도해 주세요.");
         }
-//s3업로드
 
+$file_data = file_get_contents($myfile_save_dir.$name);
+
+//s3업로드
 $s3Client = S3Client::factory(array(
 'region' => 'ap-northeast-2',
 'version' => 'latest',
@@ -102,13 +102,11 @@ $s3Client = S3Client::factory(array(
 'secret' => 'Awhyfz83L2oQoG7JkzleuPfP8/R44TQAvJRGsH99'
 ));
 
-//$file_handler = fopen('/var/www/html/test/contest/list.php', 'r');
-
 try{
         $result = $s3Client->putObject(array(
         'Bucket' => 'project-contest-apply', // s3버킷 명
         'Key'    => $name,  // 파일명 설정
-        'Body'   => $myfile_save_dir.$name, // 경로 설정
+        'Body'   => $file_data, // 경로 설정
         'ACL'    => 'public-read'
         ));
 
@@ -146,7 +144,6 @@ try{
 </table>
 <p><b>전송완료!</b></p>
 <p><a href='../dynamoDBtest/scan.php'>목록가기</a></p>
-<p><a href="http://52.79.240.252/contest/fileDownload.php?filepath=<?= $myfile_save_dir . $name ?>">업로드한 파일 다운로드 하기</a></p>
 </body>
 </html>
 

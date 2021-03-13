@@ -12,12 +12,12 @@ $s3Client = S3Client::factory(array(
 'secret' => 'Awhyfz83L2oQoG7JkzleuPfP8/R44TQAvJRGsH99'
 ));
 
-$test = 'list1.php';
+$test = 'ready1.png';
 
 try{
 	$result = $s3Client->getObject(array(
 	'Bucket' => 'project-contest-apply',
-	'Key'    => 'list.php',
+	'Key'    => 'ready.jpg',
 	'SaveAs' => fopen($test, 'w')
 	));
 
