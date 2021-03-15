@@ -73,8 +73,8 @@ try {
 ?>
 
     <tr>
-	<!--<td><input type='checkbox' name='select' value='<?$Entryform['number'] ?>'/></td>
-	<td><a href='view.php?idx=<?echo $num;?>'><?= $Entryform['title']?></a></td>
+	<!--<td><input type='checkbox' name='select' value='<?$entryform['number'] ?>'/></td>
+	<td><a href='view.php?idx=<?echo $num;?>'><?= $entryform['title']?></a></td>
     -->
     <td><input type='checkbox' name='select' value='<?$Board['number'] ?>'/> </td>
     <td><?echo $entry['info']['이름']?> </td>

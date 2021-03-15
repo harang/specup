@@ -16,11 +16,17 @@ $exist_id = mysqli_num_rows($result);
 
 if($exist_id){
     echo("<script>window.alert('해당 아이디가 존재합니다.');history.go(-1);</script>");exit;
-}else{
+}
+if( $_GET['chk_info']=="company"){
+  $sql="insert into company (id,pass,name,nick,mphone,email,regist_day) ";
+  $sql.="values ('".$_GET['id']."','".$_GET['passwd']."','".$_GET['name']."','".$_GET['nick']."','".$_GET['hp']."','".$_GET['e-mail']."','$regist_day')";
+  mysqli_query($connect, $sql);
+}else if( $_GET['chk_info']=="member"){
   $sql="insert into member (id,pass,name,nick,mphone,email,regist_day) ";
   $sql.="values ('".$_GET['id']."','".$_GET['passwd']."','".$_GET['name']."','".$_GET['nick']."','".$_GET['hp']."','".$_GET['e-mail']."','$regist_day')";
   mysqli_query($connect, $sql);
 }
+
 
 mysqli_close();
 

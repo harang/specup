@@ -20,7 +20,11 @@ if(! $_GET['userid'] ){
 
 include "dbconn.php";
 
-$sql = "select * from member where id='".$_GET['userid']."' and pass='".$_GET['passwd']."'";
+if( $_GET['chk_info']=="member"){
+	$sql = "select * from member where id='".$_GET['userid']."' and pass='".$_GET['passwd']."'";
+}else if( $_GET['chk_info']=="company"){
+	$sql = "select * from company where id='".$_GET['userid']."' and pass='".$_GET['passwd']."'";
+}
 $result = mysqli_query($connect, $sql);
 $num_match = mysqli_num_rows($result);
 
@@ -36,7 +40,11 @@ if(! $num_match){
     $_SESSION['hp'] = $row[mphone];
     $_SESSION['e-mail'] = $row[email];
     $_SESSION['regist_day'] = $row[regist_day];
-
+    if($_GET['chk_info']=="member"){
+	    $_SESSION['type'] = "member";
+    }else{
+	    $_SESSION['type'] = "company";	
+    }
     echo("<script>window.alert('로그인 성공');
            location.href = '../index.php';</script>");
 

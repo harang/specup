@@ -5,6 +5,8 @@
 <article>
 <h1>Join Us</h1>
 <form id="join" method="get" action="./member_insert.php">
+<input type="radio" name="chk_info" value="member" checked >개인
+<input type="radio" name="chk_info" value="company">기업
 <fieldset>
   <legend>Basic Info</legend>
   <label>User ID</label>

@@ -10,6 +10,8 @@
 	
 	<div class="login_box">
 		<form name="login_form" method="get" action="login.php">
+		        <input type="radio" name="chk_info" value="member" checked >개인
+			<input type="radio" name="chk_info" value="company">기업<br>
 			<label>아이디</label>
 				<input type="text" name="userid">
 				<div class="clear"></div>

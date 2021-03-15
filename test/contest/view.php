@@ -112,30 +112,32 @@ $s3Client = S3Client::factory(array(
 </tr>
 </table>
 
-<form method="post"> <input type="submit" name="test" id="test" value="다운받기" /><br/> 
-</form> 
-<?php function testfun() 
-{
-	try{
-        	$result = $s3Client->getObject(array(
-        	'Bucket' => 'project-contest-apply', // s3버킷 명
-        	'Key'    => $file,  // 파일명 설정
-        	'SaveAs' => fopen($file, 'w') // getObject를 통해 받아온 s3객체를 지정된 경로에 파일로 저장한다.
-	));
-	
-	} catch (S3Exception $e) {
-        	echo $e->getMessage() . PHP_EOL;
-	}
+<!--<form method="post"> <input type="submit" name="test" id="test" value="다운받기" /><br/> 
+</form>!--> 
+<?
+try{
+	$download_url = $s3Client->getObjectUrl('project-contest-apply',$file);
+	//echo $download_url."\n";
+
+	$secret_plans_cmd = $s3Client->getCommand(
+		'GetObject',
+		['Bucket' => 'project-contest-apply',
+		 'Key' => $file ]);
+	$request = $s3Client->createPresignedRequest($secret_plans_cmd, '+1 hour');
+        $download =  $request->getUri()."\n";
+}catch (S3Exception $e) {
+    echo $e->getMessage() . PHP_EOL;
 }
-if(array_key_exists('test',$_POST))
+	 //header('Location:',$request->getUri());
+?>
+<!--if(array_key_exists('test',$_POST))
 { 
 	testfun(); 
 }
-?>
-
-<input type="button" onclick="location.href='http://15.164.251.2/contest/fileDownload.php?filepath=<?=$file_data?>'" value="다운로드">
-
+?>!-->
+<form action="<?echo$download?>">
+<input type="submit" value="다운로드"/>
 <input type="button" onclick="location.href='../dynamoDBtest/scan.php'" value="목록" >
-
+</form>	
 </body>
 </html>

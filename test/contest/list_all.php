@@ -80,6 +80,8 @@ $params = [
 
 
 <?
+session_start();
+//if($_SESSION['userid']=="admin" ){
 try {
 	//
 	//$result = $dynamodb->query($params);
@@ -89,6 +91,7 @@ try {
 	// echo $marshaler->unmarshalValue($entry['number']) . ': ' .
  	  //    $marshaler->unmarshalValue($entry['title']) . "\n";
 	$entry = $marshaler->unmarshalItem($i);
+if($_SESSION['userid']=="admin"){
 ?>
 
     <tr>
@@ -103,7 +106,12 @@ try {
     </tr>
 
 <?
-    }
+}}
+   
+if($_SESSION['userid']!="admin"){?>
+	<h1>관리자만 열람할 수 있는 항목입니다.</h1>
+
+<?}
 } catch (DynamoDbException $e) {
     echo "Unable to scan:\n";
     echo $e->getMessage() . "\n";

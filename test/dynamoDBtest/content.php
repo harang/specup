@@ -1,5 +1,5 @@
 <?
-
+session_start();
 /**
  * Copyright 2010-2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
@@ -75,9 +75,13 @@ try {
   <!__  <img src="https://project-contest-detail.s3.ap-northeast-2.amazonaws.com/contest_7.png">    
     <img src="<?= $add;?>">
     <hr>
+<?if ($_SESSION['type']== "member"){ ?>
     <input type='button' value='공모전 신청' onClick='location.href="../contest/upload_contest.php?idx=<?echo $number;?>"' />
+<?} if($_SESSION['type']=="company" or $_SESSION['userid']=="admin"){
+?>
     <input type='button' value='참가현황' onClick='location.href="../contest/list.php?idx=<?echo $num;?> "' />
-     <input type="button" value ="목록" onclick="location.href='../dynamoDBtest/scan.php'">
+<?} ?>     
+	<input type="button" value ="목록" onclick="location.href='../dynamoDBtest/scan.php'">
   </center>
 <?
 

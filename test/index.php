@@ -73,8 +73,8 @@
 							if(! $_SESSION['userid'])
 							{
 								?>
-								<li class="active"><a href="./login/login_form.php">개인 로그인</a></li>
-								| <li class="active"><a href="./member/join.php">개인 회원가입</a></li>
+								<li class="active"><a href="./login/login_form.php">로그인</a></li>
+								| <li class="active"><a href="./member/join.php">회원가입</a></li>
 								
 						<?php 
 							} else {
