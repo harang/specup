@@ -1,5 +1,5 @@
 <?php	
-include "../header2.php";
+include "../header.php";
 include "../login/dbconn.php";
 	
 $scale = 5;
@@ -28,7 +28,7 @@ $start = ($page - 1) * $scale;
 $number = $total_record - $start;
 	
 include "sub_img.php";
-include "sub_menu.php";
+//include "sub_menu.php";
 ?>
 <article>
   <h1> Notice </h1>

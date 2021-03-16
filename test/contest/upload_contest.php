@@ -1,5 +1,6 @@
 <?
 session_start();
+include "../header.php";
 $number = $_GET['idx'];
 //$tit = $_GET['number'];
 ?>

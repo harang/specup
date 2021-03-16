@@ -30,6 +30,6 @@ $result = $client->deleteItem([
 ]);
 
 
-  echo("<script>window.alert('잘가요~');
+  echo("<script>window.alert('다음에 또 만나요!');
 	location.href='../index.php';</script>");
 ?>

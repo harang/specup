@@ -1,4 +1,5 @@
 <?
+include "../header.php";
 /**
  * Copyright 2010-2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
@@ -28,7 +29,7 @@ $sdk = new Aws\Sdk([
 $dynamodb = $sdk->createDynamoDb();
 
 $marshaler = new Marshaler();
-$tableName = 'Entryform';
+$tableName = 'entryform';
 $num = $_POST['idx'];
 
 /*
@@ -75,7 +76,6 @@ $params = [
     <th>이름</th>
     <th>소속</th>
     <th>제목</th>
-    <th>신청상태</th>
   </tr>
 
 
@@ -102,7 +102,6 @@ if($_SESSION['userid']=="admin"){
     <td><?echo $entry['info']['이름']?> </td>
     <td><?echo $entry['info']['소속']?></td>
     <td><?echo $entry['title']?></td>
-    <td><?echo $entry['info']['신청상태'] ?></td>
     </tr>
 
 <?

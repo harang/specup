@@ -1,5 +1,7 @@
-<?
-include '../header.php';
+
+
+<?php
+
 /**
  * Copyright 2010-2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
@@ -12,7 +14,7 @@ include '../header.php';
  * This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
  * CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
-*/
+ */
 
 require '/var/www/html/vendor/autoload.php';
 
@@ -29,71 +31,74 @@ $sdk = new Aws\Sdk([
 $dynamodb = $sdk->createDynamoDb();
 
 $marshaler = new Marshaler();
-$tableName = 'entryform';
-$num = $_GET['idx'];
 
+//Expression attribute values
 $eav = $marshaler->marshalJson('
     {
-        ":titnum": '.$num.'
+        ":start_num": 1,
+        ":end_num": 100
     }
 ');
 
 $params = [
-    'TableName' => $tableName,
-    'KeyConditionExpression' => '#num = :titnum',
+    'TableName' => 'Board',
+    'ProjectionExpression' => '#num, title',
+    'FilterExpression' => '#num between :start_num and :end_num',
     'ExpressionAttributeNames'=> [ '#num' => 'number' ],
     'ExpressionAttributeValues'=> $eav
 ];
-
 
 ?>
 
 <article>
 <div class="container">
-  <center>
-  <h1> 공모전 참여현황 </h1>
-  </center><hr>
+
+  <h1 align="center" >공모전 리스트</h1>
+
   <table>
   <tr>
     <th></th>
-    <th>이름</th>
-    <th>소속</th>
-    <th>제목</th> 
-    <th>날짜</th> 
- </tr>
+    <th>제목</th>
 
-<?
-$dataString =date("Y-m-d");
+<?php
 try {
-	$result = $dynamodb->query($params);
-		
-        foreach ($result['Items'] as $i) {
-	// echo $marshaler->unmarshalValue($entry['number']) . ': ' .
- 	  //    $marshaler->unmarshalValue($entry['title']) . "\n";
-	$entry = $marshaler->unmarshalItem($i);
-?>
-    <tr>
-	<!--<td><input type='checkbox' name='select' value='<?$entryform['number'] ?>'/></td>
-	<td><a href='view.php?idx=<?echo $num;?>'><?= $entryform['title']?></a></td>
-    -->
-    <td><input type='checkbox' name='select' value='<?$Board['number'] ?>'/> </td>
-    <td><?echo $entry['info']['이름']?> </td>
-    <td><?echo $entry['info']['소속']?></td>
-    <td><a href='view.php?idx=<?echo $num;?>&title=<?echo $entry['title'];?>'><?echo $entry['title']?></a></td>
-    <td><?echo $dataString?> </td>
-    </tr>
+    while (true) {
+        $result = $dynamodb->scan($params);
 
-<?
+        foreach ($result['Items'] as $i) {
+            $Board = $marshaler->unmarshalItem($i);
+        
+?>
+  <tr>
+    <td><input type='checkbox' name='select' value='<?$Board['number'] ?>'/></td>
+    <td><a href='content.php?idx=<?echo $Board['number'];?>&title=<?echo $Board['title'];?>'><?= $Board['title'] ?></a> </td>
+
+<?php
+	}
+?>
+
+
+<?php
+
+
+
+        if (isset($result['LastEvaluatedKey'])) {
+            $params['ExclusiveStartKey'] = $result['LastEvaluatedKey'];
+        } else {
+            break;
+        }
     }
+
 } catch (DynamoDbException $e) {
     echo "Unable to scan:\n";
     echo $e->getMessage() . "\n";
-}?>
+}
 
 
+?>
 </table>
-<hr>
- <input type="button" value ="목록" onclick="location.href='../dynamoDBtest/scan.php'">
+  <button type="button" onclick="location.href='upload_form.php'" class="btn btn-theme" >글쓰기</a>
+  <button type="button" onclick="location.href='../index.php'" class="btn btn-theme" >돌아가기</a>
 </div>
 </article>
 

@@ -79,7 +79,7 @@
 							} else {
 						?>
 							<li class="active"> <a href="./login/logout.php">로그아웃</a></li>
-								|<li class="active"> <a href="./member/member_modify.php">회원 정보 수정</a></li>
+							<li class="active"> <a href="./member/member_modify.php">회원 정보 수정</a></li>
 								
 						<?php } ?>
 
@@ -119,7 +119,7 @@
 					?>-->
 
 				<?php
-				include "scan.php"
+				include "scan2.php"
 				?>
 
 		 		</table>
