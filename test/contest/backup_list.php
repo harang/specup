@@ -61,6 +61,7 @@ $params = [
     <th>날짜</th> 
  </tr>
 
+
 <?
 $dataString =date("Y-m-d");
 try {
@@ -71,6 +72,7 @@ try {
  	  //    $marshaler->unmarshalValue($entry['title']) . "\n";
 	$entry = $marshaler->unmarshalItem($i);
 ?>
+
     <tr>
 	<!--<td><input type='checkbox' name='select' value='<?$entryform['number'] ?>'/></td>
 	<td><a href='view.php?idx=<?echo $num;?>'><?= $entryform['title']?></a></td>
@@ -88,7 +90,6 @@ try {
     echo "Unable to scan:\n";
     echo $e->getMessage() . "\n";
 }?>
-
 
 </table>
 <hr>

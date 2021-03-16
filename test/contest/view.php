@@ -112,8 +112,6 @@ $s3Client = S3Client::factory(array(
 </tr>
 </table>
 
-<!--<form method="post"> <input type="submit" name="test" id="test" value="다운받기" /><br/> 
-</form>!--> 
 <?
 try{
 	$download_url = $s3Client->getObjectUrl('project-contest-apply',$file);
@@ -130,11 +128,6 @@ try{
 }
 	 //header('Location:',$request->getUri());
 ?>
-<!--if(array_key_exists('test',$_POST))
-{ 
-	testfun(); 
-}
-?>!-->
 <form action="<?echo$download?>">
 <input type="submit" value="다운로드"/>
 <input type="button" onclick="location.href='../dynamoDBtest/scan.php'" value="목록" >
