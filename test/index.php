@@ -119,7 +119,7 @@
 					?>-->
 
 				<?php
-				include "scan2.php"
+				include "dynamoDBtest/scan2.php"
 				?>
 
 		 		</table>

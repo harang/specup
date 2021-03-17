@@ -1,4 +1,17 @@
+<style>
 
+th {
+
+  display: table-cell;
+
+  vertical-align: inherit;
+
+  font-weight: bold;
+
+  text-align: center;
+
+}
+</style>
 
 <?php
 
@@ -53,12 +66,12 @@ $params = [
 <article>
 <div class="container">
 
-  <h1 align="center" >공모전 리스트</h1>
 
   <table>
   <tr>
-    <th></th>
-    <th>제목</th>
+    <th>&nbsp</th>
+  <th align="center">제목</th>
+  </tr>
 
 <?php
 try {
@@ -70,9 +83,9 @@ try {
         
 ?>
   <tr>
-    <td><input type='checkbox' name='select' value='<?$Board['number'] ?>'/></td>
-    <td><a href='content.php?idx=<?echo $Board['number'];?>&title=<?echo $Board['title'];?>'><?= $Board['title'] ?></a> </td>
-
+    <td><input type='checkbox' name='select' value='<?$Board['number'] ?>'/>&nbsp&nbsp</td>
+    <td><a href='dynamoDBtest/content.php?idx=<?echo $Board['number'];?>&title=<?echo $Board['title'];?>'><?= $Board['title'] ?></a> </td>
+</tr>
 <?php
 	}
 ?>
@@ -96,6 +109,7 @@ try {
 
 
 ?>
+
 </table>
   <button type="button" onclick="location.href='upload_form.php'" class="btn btn-theme" >글쓰기</a>
   <button type="button" onclick="location.href='../index.php'" class="btn btn-theme" >돌아가기</a>
